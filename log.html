@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FreshMart - Delivery de Comida Fresca</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-gray-50 font-sans">
+
+    <!-- NAVBAR -->
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-3">
+                    <span class="text-3xl">🥕</span>
+                </div>
+
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="index.html" class="nav-link hover:text-green-600">Inicio</a>
+                    </div>
+
+                
+            </div>
+        </div>
+    </nav>
+
+    <!-- TABLA DE PRECIOS / COMPARACIÓN -->
+    <section class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-8">Comparación de Planes</h2>
+            <table class="w-full border-collapse border border-gray-300">
+                <thead>
+                    <tr class="bg-green-600 text-white">
+                        <th class="p-4">Plan</th>
+                        <th class="p-4">Básico</th>
+                        <th class="p-4">Premium</th>
+                        <th class="p-4">Familiar</th>
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                    <tr><td class="border p-4">Entrega</td><td class="border p-4">Gratis > $30</td><td class="border p-4">Gratis siempre</td><td class="border p-4">Gratis siempre</td></tr>
+                    <tr><td class="border p-4">Tiempo</td><td class="border p-4">45 min</td><td class="border p-4">30 min</td><td class="border p-4">25 min</td></tr>
+                    <tr><td class="border p-4">Descuento Orgánico</td><td class="border p-4">10%</td><td class="border p-4">20%</td><td class="border p-4">25%</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- FORMULARIO DE CONTACTO / SUSCRIPCIÓN -->
+    <section id="sobre-nosotros" class="py-16 bg-gray-100">
+        <div class="max-w-2xl mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-8">Suscríbete y Ahorra</h2>
+            <form id="subscription-form" class="bg-white p-8 rounded-3xl shadow-lg">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <input type="text" id="nombre" placeholder="Nombre completo" class="p-4 border rounded-2xl" required>
+                    <input type="email" id="email" placeholder="Correo electrónico" class="p-4 border rounded-2xl" required>
+                </div>
+                <select id="plan" class="mt-6 w-full p-4 border rounded-2xl">
+                    <option value="">Selecciona un plan</option>
+                    <option value="basico">Básico - $9.99/mes</option>
+                    <option value="premium">Premium - $19.99/mes</option>
+                    <option value="familiar">Familiar - $29.99/mes</option>
+                </select>
+                <button type="submit" class="mt-8 w-full bg-green-600 text-white py-4 rounded-3xl font-semibold">
+                    <a href="index.html"></a>
+                    Suscribirme
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- CART SIDEBAR -->
+    <div id="cart-sidebar" class="fixed top-0 right-0 h-full w-96 bg-white shadow-2xl translate-x-full transition-transform">
+        <!-- ... (igual que antes) -->
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>

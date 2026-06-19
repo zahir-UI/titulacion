@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABARROTES CECYTEM - APP EN ENTREGA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+        
+        .hero-bg {
+            background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+        }
+        
+        .product-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+        
+        .nav-link {
+            transition: all 0.2s ease;
+        }
+        
+        .nav-link.active {
+            background-color: #15803d;
+            color: white;
+            border-radius: 9999px;
+        }
+        
+        .cart-count {
+            animation: pop 0.3s ease;
+        }
+        
+        @keyframes pop {
+            0% { transform: scale(0.8); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- NAVBAR -->
+    <nav class="bg-white border-b border-gray-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center gap-2">
+                    <img src="logo.png" class="w-9 h-9 bg-green-600 rounded-2xl flex items-center justify-center text-white font-bold text-2xl">
+                    <div>
+                        <span class="text-2xl font-bold text-green-700">Abarrotes</span><span class="text-2xl font-bold text-gray-800">Cecy</span>
+                    </div>
+                </div>
+
+                <!-- Delivery Location -->
+                <div class="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-800 cursor-pointer">
+                    <i class="fa-solid fa-location-dot text-green-600"></i>
+                    <div>
+                        <a href="https://maps.app.goo.gl/jxncUWkKtmNYvfKDA" class="font-medium text-gray-900">Ubicación de la tienda</a>
+                    </div>
+                </div>
+
+                <!-- Search -->
+                <div class="flex-1 max-w-xl mx-8">
+                    <div class="relative">
+                        <input 
+                            type="text" 
+                            id="search-input"
+                            placeholder="Buscar productos" 
+                            class="w-full bg-gray-100 border border-gray-300 focus:border-green-500 focus:ring-green-500 rounded-3xl py-3 px-5 pl-12 text-sm outline-none transition-all">
+                        <i class="fa-solid fa-magnifying-glass absolute left-5 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                    </div>
+                </div>
+
+                <!-- Right side -->
+                <div class="flex items-center gap-6">
+                    <button onclick="toggleSignIn()" 
+                            class="flex items-center gap-2 text-gray-700 hover:text-gray-900 font-medium">
+                        <i class="fa-solid fa-user text-lg"></i>
+                        <a href="log.html">Registrarse</a>
+                    </button>
+                    
+                    <div onclick="toggleCart()" class="relative cursor-pointer">
+                        <i class="fa-solid fa-shopping-cart text-2xl text-gray-700 hover:text-green-600"></i>
+                        <span id="cart-count" 
+                            class="cart-count absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- CATEGORIES -->
+        <div class="bg-white border-t">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="flex items-center gap-2 py-4 overflow-x-auto no-scrollbar">
+                    <button onclick="filterCategory('all')" 
+                            id="cat-all"
+                            class="nav-link active px-5 py-2 text-sm font-medium whitespace-nowrap flex items-center gap-2">
+                        <span>Todos Los Productos</span>
+                    </button>
+                    <button onclick="filterCategory('fruits')" 
+                            id="cat-fruits"
+                            class="nav-link px-5 py-2 text-sm font-medium whitespace-nowrap flex items-center gap-2">
+                        <span class="text-xl">🍚</span>
+                        <span>Alimentos Básicos</span>
+                    </button>
+                    <button onclick="filterCategory('vegetables')" 
+                            id="cat-vegetables"
+                            class="nav-link px-5 py-2 text-sm font-medium whitespace-nowrap flex items-center gap-2">
+                        <span class="text-xl">🥫</span>
+                        <span>Conservas y enlatados</span>
+                    </button>
+                    <button onclick="filterCategory('dairy')" 
+                            id="cat-dairy"
+                            class="nav-link px-5 py-2 text-sm font-medium whitespace-nowrap flex items-center gap-2">
+                        <span class="text-xl">🥛</span>
+                        <span>Lácteos y derivados</span>
+                    </button>
+                    <button onclick="filterCategory('meat')" 
+                            id="cat-meat"
+                            class="nav-link px-5 py-2 text-sm font-medium whitespace-nowrap flex items-center gap-2">
+                        <span class="text-xl">🧼</span>
+                        <span>Limpieza y uso personal</span>
+                    </button>
+                    <button onclick="filterCategory('bakery')" 
+                            id="cat-bakery"
+                            class="nav-link px-5 py-2 text-sm font-medium whitespace-nowrap flex items-center gap-2">
+                        <span class="text-xl">🥐</span>
+                        <span>Panaderia y Galletas</span>
+                    </button>
+                    <button onclick="filterCategory('snacks')" 
+                            id="cat-snacks"
+                            class="nav-link px-5 py-2 text-sm font-medium whitespace-nowrap flex items-center gap-2">
+                        <span class="text-xl">🍫</span>
+                        <span>Botana</span>
+                    </button>
+                    <button onclick="filterCategory('mascota')" 
+                            id="cat-mascota"
+                            class="nav-link px-5 py-2 text-sm font-medium whitespace-nowrap flex items-center gap-2">
+                        <span class="text-xl">🦮</span>
+                        <span>Mascotas</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <div class="hero-bg">
+        <div class="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div class="space-y-6">
+                <div class="inline-flex items-center gap-2 bg-white text-green-700 text-sm font-medium px-4 py-2 rounded-3xl shadow-sm">
+                    <i class="fa-solid fa-fire"></i>
+                    <span>Oferta De Tiempo Limitado
+                    </span>
+                </div>
+                
+                <h1 class="text-5xl font-bold text-gray-900 leading-tight">
+                    Productos De La Mejor Calidad
+                </h1>
+                
+                <p class="text-xl text-gray-600 max-w-md">
+                    Obten un 20% de descuento por Junio. Entrega hastala puerta de tu casa.
+                </p>
+                
+                <div class="flex items-center gap-4">
+                    <button onclick="addPromoToCart()" 
+                            class="bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-3xl font-semibold flex items-center gap-3 transition-all">
+                        <span>Ofertas</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+                
+                <div class="flex items-center gap-8 text-sm">
+                    <div class="flex items-center gap-2">
+                        <div class="w-6 h-6 bg-green-100 text-green-600 rounded-full flex items-center justify-center">✓</div>
+                        <span class="font-medium">Envio Gratis A Partir De $700</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <div class="w-6 h-6 bg-green-100 text-green-600 rounded-full flex items-center justify-center">✓</div>
+                        <span class="font-medium">30 min De Entrega</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Hero Image -->
+            <div class="relative">
+                <div class="bg-white p-3 rounded-3xl shadow-2xl">
+                    <div class="relative rounded-3xl overflow-hidden">
+                        <img id="hero-image" 
+                            src="img/Copilot_20260606_134213.png" 
+                            alt="Fresh Produce" 
+                            class="w-full h-auto object-cover aspect-[16/11]">
+                        <div class="absolute top-6 right-6 bg-red-500 text-white text-sm font-bold px-5 py-2 rounded-2xl shadow-lg">
+                            20% OFF
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PRODUCTS SECTION -->
+    <div class="max-w-7xl mx-auto px-6 py-12">
+        <div class="flex justify-between items-end mb-8">
+            <div>
+                <h2 id="section-title" class="text-3xl font-bold text-gray-900">Todos los productos</h2>
+                <p id="results-count" class="text-gray-500 mt-1"></p>
+            </div>
+        </div>
+
+        <!-- Products Grid -->
+        <div id="products-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <!-- Products will be populated by JS -->
+        </div>
+    </div>
+
+    <!-- CART SIDEBAR -->
+    <div id="cart-sidebar" class="fixed top-0 right-0 h-full w-96 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 z-[100]">
+        <div class="h-full flex flex-col">
+            <div class="p-6 border-b flex items-center justify-between">
+                <h3 class="text-2xl font-semibold">Carrito</h3>
+                <button onclick="toggleCart()" class="text-gray-400 hover:text-gray-600">
+                    <i class="fa-solid fa-xmark text-2xl"></i>
+                </button>
+            </div>
+            
+            <div id="cart-items" class="flex-1 overflow-auto p-6 space-y-6">
+                <!-- Cart items populated by JS -->
+            </div>
+            
+            <div class="p-6 border-t mt-auto">
+                <div class="flex justify-between text-lg mb-6">
+                    <span class="font-medium">Total</span>
+                    <span id="cart-total" class="font-bold">$0.00</span>
+                </div>
+                <button onclick="checkout()" 
+                        class="w-full bg-green-600 hover:bg-green-700 text-white py-4 rounded-3xl font-semibold text-lg">
+                    Proceder a Pagar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tailwind script already included
+
+        // Sample Products Data
+        let products = [
+    // Alimentos Básicos 🍚
+    {
+        id: 1,
+        name: "Arroz",
+        image:"img/Cómo cocer ARROZ BASMATI perfecto (receta FÁCIL) - PequeRecetas.jpg",
+        category: "fruits",
+        price: 35,
+        originalPrice: 40,
+        rating: 4.8,
+        reviews: 234,
+        unit: "por manojo",
+        organic: true,
+        sale: true
+    },
+    {
+        id: 2,
+        name: "Frijol",
+        image :"img/Bag of Beans.jpg",
+        category: "fruits",
+        price: 70,
+        originalPrice: null,
+        rating: 4.9,
+        reviews: 189,
+        unit: "por kilo",
+        organic: true,
+        sale: false
+    },
+    {
+        id: 3,
+        name: "Avena",
+        image:"img/10 oat-based breakfast recipes that taste like….jpg",
+        category: "fruits",
+        price: 25,
+        originalPrice: null,
+        rating: 4.7,
+        reviews: 156,
+        unit: "por kilo",
+        organic: true,
+        sale: false
+    },
+    {
+        id: 4,
+        name: "Leche Entera",
+        image:"img/679269556286863564.jpg",
+        category: "dairy",
+        price: 28,
+        originalPrice: null,
+        rating: 4.6,
+        reviews: 98,
+        unit: "por litro",
+        organic: false,
+        sale: false
+    },
+    {
+        id: 5,
+        name: "Desodorante",
+        image: "img/1011832241278662965.jpg",
+        category: "meat",
+        price: 160,
+        originalPrice: null,
+        rating: 4.8,
+        reviews: 145,
+        unit: "por kilo",
+        organic: false,
+        sale: false
+    },
+    {
+        id: 6,
+        name: "Pan de Masa Madre",
+        image:"img/Pan básico, mi primer pan de masa madre.jpg",
+        category: "bakery",
+        price: 45,
+        originalPrice: null,
+        rating: 4.9,
+        reviews: 203,
+        unit: "por pieza",
+        organic: false,
+        sale: false
+    },
+    {
+        id: 7,
+        name: "Aceite",
+        image:"img/Cinco enfermedades que se pueden combatir con una cucharada diaria de aceite de oliva.jpg",
+        category: "fruits",
+        price: 55,
+        originalPrice: 65,
+        rating: 4.7,
+        reviews: 167,
+        unit: "por kilo",
+        organic: true,
+        sale: true
+    },
+    {
+        id: 8,
+        name: "Yoghurt Griego",
+        image:"img/Knowing how to make Greek yogurt is a life hack….jpg",
+        category: "dairy",
+        price: 35,
+        originalPrice: null,
+        rating: 4.8,
+        reviews: 221,
+        unit: "por envase",
+        organic: false,
+        sale: false
+    },
+
+    // Conservas y Enlatados 🥫
+    { id: 9, name: "Atún en Agua",image:"img/Cómo hacer una cena completa con sólo una lata de atún_ receta sana y rápida.jpg", category: "vegetables", price: 22, rating: 4.6, reviews: 120, unit: "por lata", organic: false, sale: false },
+    { id: 10, name: "Sardinas en Salsa",image:"img/727542514808169214.jpg", category: "vegetables", price: 18, rating: 4.5, reviews: 98, unit: "por lata", organic: false, sale: false },
+    { id: 11, name: "Chiles Jalapeños en Escabeche",image:"img/Estas son las 2 mejores latas de chiles en vinagre, según Profeco.jpg", category: "vegetables", price: 25, rating: 4.7, reviews: 134, unit: "por lata", organic: false, sale: false },
+    { id: 12, name: "Sopa Instantánea",image:"img/¿Qué contiene la sopa instantánea_.jpg", category: "vegetables", price: 12, rating: 4.4, reviews: 210, unit: "por paquete", organic: false, sale: false },
+
+    // Lácteos y Derivados 🥛
+    { id: 13, name: "Queso Oaxaca", image:"img/430586414379020022.jpg",  category: "dairy", price: 95, rating: 4.8, reviews: 176, unit: "por kilo", organic: false, sale: false },
+    { id: 14, name: "Crema Fresca", image:"img/2-Ingredient Crème Fraîche (Easy & Foolproof!).jpg",category: "dairy", price: 28, rating: 4.7, reviews: 143, unit: "por envase", organic: false, sale: false },
+    { id: 15, name: "Leche en Polvo",image:"img/906842074954120959.jpg", category: "dairy", price: 120, rating: 4.6, reviews: 89, unit: "por bolsa", organic: false, sale: false },
+
+    // Limpieza y Uso Personal 🧼
+    { id: 16, name: "Jabón de Tocador", image:"img/Los peores jabones para bañarte según Profeco… ¿los utilizas_.jpg",category: "meat", price: 15, rating: 4.5, reviews: 200, unit: "por pieza", organic: false, sale: false },
+    { id: 17, name: "Detergente en Polvo",image:"img/Las 2 mejores marcas de jabón en polvo para lavar, según Profeco.jpg", category: "meat", price: 85, rating: 4.7, reviews: 156, unit: "por bolsa", organic: false, sale: false },
+    { id: 18, name: "Papel Higiénico",image:"img/Estas son las 5 marcas de papel higiénico más resistentes según Profeco.jpg", category: "meat", price: 65, rating: 4.8, reviews: 245, unit: "paquete 12 rollos", organic: false, sale: false },
+    { id: 19, name: "Shampoo Familiar",image:"img/565201822002408500.jpg", category: "meat", price: 75, rating: 4.6, reviews: 132, unit: "por botella", organic: false, sale: false },
+
+    // Panadería y Galletas 🥐
+    { id: 20, name: "Galletas Marías",image:"img/Galletas Marias with aluminum sleeve of cookies.jpg", category: "bakery", price: 28, rating: 4.7, reviews: 198, unit: "por paquete", organic: false, sale: false },
+    { id: 21, name: "Pan Blanco Empaquetado",image:"img/Truco para evitar que el pan blanco te engorde.jpg", category: "bakery", price: 38, rating: 4.6, reviews: 176, unit: "por pieza", organic: false, sale: false },
+
+    // Botanas 🍫
+    { id: 22, name: "Papas Fritas",image:"img/Papitas.jpg", category: "snacks", price: 25, rating: 4.7, reviews: 210, unit: "por bolsa", organic: false, sale: false },
+    { id: 23, name: "Cacahuates Salados",image:"img/This is a Mexican snack called Cacahuates….jpg", category: "snacks", price: 30, rating: 4.8, reviews: 156, unit: "por bolsa", organic: false, sale: false },
+    { id: 24, name: "Refresco Cola 2L",image:"img/274015958564013455.jpg", category: "snacks", price: 38, rating: 4.6, reviews: 245, unit: "por botella", organic: false, sale: false },
+
+    // Mascotas 🦮
+    { id: 25, name: "Croquetas para Perro",image:"img/Estas son las mejores croquetas mexicanas que cuidan la salud de tu perro, según la Profeco.jpg", category: "mascota", price: 450, rating: 4.8, reviews: 189, unit: "por costal 20kg", organic: false, sale: false },
+    { id: 26, name: "Croquetas para Gato",image:"img/Las croquetas para gato que podrían dañar su salud, según Profeco.jpg", category: "mascota", price: 320, rating: 4.7, reviews: 145, unit: "por costal 10kg", organic: false, sale: false }
+]
+
+
+        let cart = []
+
+        // Render Products
+        function renderProducts(filteredProducts) {
+            const grid = document.getElementById('products-grid')
+            grid.innerHTML = ''
+            
+            filteredProducts.forEach(product => {
+                const card = document.createElement('div')
+                card.className = `product-card bg-white border border-gray-200 rounded-3xl overflow-hidden`
+                
+                card.innerHTML = `
+                    <div class="relative">
+                        <img src="${product.image || 'https://picsum.photos/id/' + (product.id + 20) + '/300/220'}" 
+                            alt="${product.name}" 
+                            class="w-full h-52 object-cover">
+                        ${product.organic ? `
+                        <div class="absolute top-4 left-4 bg-green-100 text-green-700 text-xs font-medium px-3 py-1 rounded-2xl">
+                            Organic
+                        </div>` : ''}
+                        ${product.sale ? `
+                        <div class="absolute top-4 right-4 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-2xl">
+                            Sale
+                        </div>` : ''}
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-semibold text-gray-900 mb-1">${product.name}</h3>
+                        <div class="flex items-center gap-2 text-sm mb-3">
+                            <div class="flex items-center text-amber-500">
+                                ★
+                            </div>
+                            <span class="font-medium">${product.rating}</span>
+                            <span class="text-gray-400">•</span>
+                            <span class="text-gray-500">${product.reviews} reviews</span>
+                        </div>
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="text-2xl font-bold text-gray-900">$${product.price}</span>
+                            ${product.originalPrice ? `<span class="text-sm text-gray-400 line-through">$${product.originalPrice}</span>` : ''}
+                            <span class="text-xs text-gray-500 ml-auto">${product.unit}</span>
+                        </div>
+                        <button onclick="addToCart(${product.id})" 
+                                class="w-full bg-green-600 hover:bg-green-700 transition-colors text-white py-3 rounded-2xl font-medium flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-plus"></i>
+                            Añadir al carrito
+                        </button>
+                    </div>
+                `
+                grid.appendChild(card)
+            })
+            
+            document.getElementById('results-count').textContent = `${filteredProducts.length} products found`
+        }
+
+        // Filter by category
+        function filterCategory(category) {
+            // Remove active class from all
+            document.querySelectorAll('.nav-link').forEach(btn => {
+                btn.classList.remove('active')
+            })
+            
+            // Add active class
+            if (category === 'all') {
+                document.getElementById('cat-all').classList.add('active')
+            } else if (category === 'fruits') {
+                document.getElementById('cat-fruits').classList.add('active')
+            } else if (category === 'vegetables') {
+                document.getElementById('cat-vegetables').classList.add('active')
+            } else if (category === 'dairy') {
+                document.getElementById('cat-dairy').classList.add('active')
+            } else if (category === 'meat') {
+                document.getElementById('cat-meat').classList.add('active')
+            } else if (category === 'bakery') {
+                document.getElementById('cat-bakery').classList.add('active')
+            } else if (category === 'snacks') {
+                document.getElementById('cat-snacks').classList.add('active')
+            } else if (category === 'mascota') {
+                document.getElementById('cat-mascota').classList.add('active')
+            }
+            
+            let filtered = products
+            
+            if (category !== 'all') {
+                filtered = products.filter(p => p.category === category)
+            }
+            
+            renderProducts(filtered)
+        }
+
+        // Add to cart
+        function addToCart(id) {
+            const product = products.find(p => p.id === id)
+            if (!product) return
+            
+            const existing = cart.find(item => item.id === id)
+            
+            if (existing) {
+                existing.quantity = (existing.quantity || 1) + 1
+            } else {
+                cart.push({...product, quantity: 1})
+            }
+            
+            updateCartCount()
+            showToast(`${product.name} añadido correctamente`)
+        }
+
+        function addPromoToCart() {
+            showToast("Organic produce bundle added!")
+            // You can add logic here if needed
+        }
+
+        // Update cart count
+        function updateCartCount() {
+            let count = 0
+            cart.forEach(item => count += item.quantity || 1)
+            document.getElementById('cart-count').textContent = count
+        }
+
+        // Toast notification
+        function showToast(message) {
+            const toast = document.createElement('div')
+            toast.className = `fixed bottom-6 left-1/2 -translate-x-1/2 bg-gray-900 text-white px-6 py-3 rounded-3xl shadow-2xl flex items-center gap-3 z-[200]`
+            toast.innerHTML = `
+                <i class="fa-solid fa-check-circle text-green-400"></i>
+                <span>${message}</span>
+            `
+            document.body.appendChild(toast)
+            
+            setTimeout(() => {
+                toast.style.transition = 'all 0.4s ease'
+                toast.style.opacity = '0'
+                toast.style.transform = 'translate(-50%, 20px)'
+                setTimeout(() => toast.remove(), 400)
+            }, 2500)
+        }
+
+        // Cart sidebar
+        function toggleCart() {
+            const sidebar = document.getElementById('cart-sidebar')
+            if (sidebar.classList.contains('translate-x-full')) {
+                sidebar.classList.remove('translate-x-full')
+                renderCart()
+            } else {
+                sidebar.classList.add('translate-x-full')
+            }
+        }
+
+        function renderCart() {
+            const container = document.getElementById('cart-items')
+            container.innerHTML = ''
+            
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 text-gray-400">
+                        <i class="fa-solid fa-cart-shopping text-6xl mb-4"></i>
+                        <p class="text-lg">El carrito esta vacio</p>
+                    </div>
+                `
+                document.getElementById('cart-total').textContent = '$0.00'
+                return
+            }
+            
+            let total = 0
+            
+            cart.forEach((item, index) => {
+                const itemTotal = item.price * (item.quantity || 1)
+                total += itemTotal
+                
+                const div = document.createElement('div')
+                div.className = "flex gap-4"
+                div.innerHTML = `
+                    <img src="${item.image || 'https://picsum.photos/id/' + (item.id + 20) + '/80/80'}" 
+                        class="w-20 h-20 object-cover rounded-2xl">
+                    <div class="flex-1">
+                        <h4 class="font-medium">${item.name}</h4>
+                        <p class="text-sm text-gray-500">${item.unit}</p>
+                        <div class="flex items-center justify-between mt-2">
+                            <div class="flex items-center border border-gray-200 rounded-2xl">
+                                <button onclick="changeQuantity(${index}, -1)" class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-900">-</button>
+                                <span class="px-3">${item.quantity || 1}</span>
+                                <button onclick="changeQuantity(${index}, 1)" class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-900">+</button>
+                            </div>
+                            <div>
+                                <span class="font-semibold">$${(itemTotal).toFixed(2)}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="removeFromCart(${index})" class="text-red-400 hover:text-red-600">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                `
+                container.appendChild(div)
+            })
+            
+            document.getElementById('cart-total').textContent = `$${total.toFixed(2)}`
+        }
+
+        function changeQuantity(index, change) {
+            if (!cart[index]) return
+            cart[index].quantity = (cart[index].quantity || 1) + change
+            
+            if (cart[index].quantity < 1) {
+                cart.splice(index, 1)
+            }
+            
+            renderCart()
+            updateCartCount()
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1)
+            renderCart()
+            updateCartCount()
+        }
+
+        function checkout() {
+            if (cart.length === 0) return
+            alert("Thank you for your order! (Demo)")
+            cart = []
+            updateCartCount()
+            toggleCart()
+        }
+
+        function toggleSignIn() {
+            alert("Sign in functionality would go here (Demo)")
+        }
+
+        function learnMore() {
+            alert("Learn more about our organic products! (Demo)")
+        }
+
+        document.getElementById('search-input').addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase().trim()
+            
+            if (!term) {
+                filterCategory('all')
+                return
+            }
+            
+            const filtered = products.filter(product => 
+                product.name.toLowerCase().includes(term)
+            )
+            
+            document.getElementById('section-title').textContent = `Results for "${term}"`
+            renderProducts(filtered)
+            if (term
+
+            ) {
+                
+            }
+        })
+
+        window.onload = function() {
+            renderProducts(products)
+            
+        }
+    </script>
+</body>
+</html>
